@@ -24,6 +24,11 @@ export default function Home() {
               Init Data
             </Cell>
           </Link>
+          <Link href="tabbar">
+            <Cell subtitle="tabbar ">
+              tabbar animations
+            </Cell>
+          </Link>
         </Section>
       </List>
     </Page>
