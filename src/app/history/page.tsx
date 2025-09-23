@@ -1,122 +1,117 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Box, Typography } from "@mui/material";
-import Lottie from "lottie-react";
+import Lottie, { AnimationItem } from "lottie-web";
 
 export default function HistorySwitcher() {
-  // 🔘 تب انتخابی
   const [tab, setTab] = useState<"all" | "joined">("all");
-
-  // 🔘 انیمیشن گرادینت
-  const [gradientAnimation, setGradientAnimation] = useState<object | null>(null);
+  const gradientRef = useRef<HTMLDivElement>(null);
+  const animationInstance = useRef<AnimationItem | null>(null);
 
   useEffect(() => {
-    fetch("/animations/gradient.json")
-      .then((res) => res.json())
-      .then((data: object) => setGradientAnimation(data))
-      .catch((err) => console.error("Failed to load Gradient JSON", err));
+    if (gradientRef.current) {
+      animationInstance.current = Lottie.loadAnimation({
+        container: gradientRef.current,
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        path: "/animations/gradient.json",
+      });
+    }
+    return () => {
+      animationInstance.current?.destroy();
+    };
   }, []);
 
   return (
     <Box
       sx={{
-        minHeight: "100vh", // پس‌زمینه کل صفحه
-        backgroundColor: "#121212", // مشکی
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        pt: 4, // سوئیچر بیاد بالا
+        width: "100vw",
+        height: "100vh",
+        position: "relative",
+        backgroundColor: "#121212",
+        overflow: "hidden",
       }}
     >
-      {/* 🔘 سوئیچر */}
+      {/* بکگراند گرادینت */}
+      <Box
+        ref={gradientRef}
+        sx={{
+          position: "fixed",
+          top: 289,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 0,
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* سوئیچر */}
       <Box
         sx={{
-          position: "relative",
-          width: "395px",
-          height: "45px",
-          borderRadius: "999px",
+          position: "fixed",
+          top: 20,
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: 395,
+          height: 40,
+          borderRadius: 999,
           backgroundColor: "#1f1f1f",
           display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
           p: "4px",
-          mx: "auto",
+          zIndex: 1,
         }}
       >
-        {/* بکگراند متحرک */}
+        {/* بکگراند انتخاب شده */}
         <Box
           sx={{
             position: "absolute",
-            top: "4px",
-            left: tab === "all" ? "4px" : "calc(50% + 2px)",
+            top: 7,
+            left: tab === "all" ? 4 : "calc(50% + 2px)",
             width: "calc(50% - 6px)",
-            height: "37px",
+            height: 37,
             backgroundColor: "#3a3a3a",
-            borderRadius: "999px",
+            borderRadius: 999,
             transition: "all 0.3s ease",
-            zIndex: 1,
+            zIndex: 0,
           }}
         />
 
-        {/* 🟢 دکمه All */}
+        {/* دکمه All */}
         <Box
           onClick={() => setTab("all")}
-          sx={{
-            flex: 1,
-            textAlign: "center",
-            zIndex: 2,
-            cursor: "pointer",
-          }}
+          sx={{ flex: 1, textAlign: "center", zIndex: 1, cursor: "pointer" }}
         >
-          <Typography
-            sx={{
-              fontWeight: 600,
-              color: tab === "all" ? "#fff" : "#aaa",
-              transition: "color 0.3s",
-            }}
-          >
-            All
-          </Typography>
+<Typography
+  sx={{
+    fontWeight: 600,
+    color: tab === "all" ? "#fff" : "#aaa",
+    transition: "color 0.3s",
+    lineHeight: "37px", // به جای عدد، این رو تنظیم کن
+  }}
+>
+  All
+</Typography>
         </Box>
 
-        {/* 🟢 دکمه Joined */}
+        {/* دکمه Joined */}
         <Box
           onClick={() => setTab("joined")}
-          sx={{
-            flex: 1,
-            textAlign: "center",
-            zIndex: 2,
-            cursor: "pointer",
-          }}
+          sx={{ flex: 1, textAlign: "center", zIndex: 1, cursor: "pointer",}}
         >
           <Typography
             sx={{
               fontWeight: 600,
               color: tab === "joined" ? "#fff" : "#aaa",
               transition: "color 0.3s",
+              lineHeight: "37px", // به جای عدد، این رو تنظیم کن
             }}
           >
             Joined
           </Typography>
         </Box>
-
-        {/* لوتی گرادینت بالای سوئیچر */}
-        {gradientAnimation && (
-          <Box
-            sx={{
-              bottom: 75,
-              left: 0,
-              width: "100%",
-              height: 80,
-              pointerEvents: "none",
-              zIndex: 0,
-              position: "fixed",
-            }}
-          >
-            <Lottie animationData={gradientAnimation} loop={true} />
-          </Box>
-        )}
       </Box>
     </Box>
   );
