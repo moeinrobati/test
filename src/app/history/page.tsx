@@ -52,10 +52,10 @@ export default function HistorySwitcher() {
       <Box
         sx={{
           position: "fixed",
-          top: 20,
+          top: 22,
           left: "50%",
           transform: "translateX(-50%)",
-          width: 395,
+          width: 390,
           height: 40,
           borderRadius: 999,
           backgroundColor: "#1f1f1f",
@@ -68,7 +68,7 @@ export default function HistorySwitcher() {
         <Box
           sx={{
             position: "absolute",
-            top: 7,
+            top: 5,
             left: tab === "all" ? 4 : "calc(50% + 2px)",
             width: "calc(50% - 6px)",
             height: 37,
