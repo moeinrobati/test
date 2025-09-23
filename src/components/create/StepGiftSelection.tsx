@@ -7,16 +7,21 @@ import { Box, Typography, TextField, Button } from "@mui/material";
 interface StepGiftSelectionProps {
   gift: string;
   setGift: (value: string) => void;
-  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  onNext: () => void; // به جای onSubmit
 }
 
 export default function StepGiftSelection({
   gift,
   setGift,
-  onSubmit,
+  onNext,
 }: StepGiftSelectionProps) {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onNext(); // اینجا فراخوانی میشه
+  };
+
   return (
-    <Box component="form" onSubmit={onSubmit} sx={{ width: "100%" }}>
+    <Box component="form" onSubmit={handleSubmit} sx={{ width: "100%" }}>
       <Typography sx={{ mb: 2 }}>Enter the gift name:</Typography>
       <TextField
         variant="outlined"

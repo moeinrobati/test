@@ -49,8 +49,6 @@ const IOSSwitch = React.forwardRef<HTMLInputElement, SwitchProps>(function IOSSw
     <Switch
       focusVisibleClassName=".Mui-focusVisible"
       disableRipple
-      ref={ref}
-      {...props}
       sx={{
         width: 50,
         height: 30,
