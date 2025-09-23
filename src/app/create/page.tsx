@@ -1,37 +1,44 @@
 "use client";
 
-import React, { useState } from "react";
-import { Box, Stepper, Step, StepLabel } from "@mui/material";
-
-import StepGift from "@/components/create/StepGiftSelection";
+import React, { useState, FormEvent } from "react";
+import { Box } from "@mui/material";
+import StepGiftSelection from "@/components/create/StepGiftSelection";
 import StepTerms from "@/components/create/StepTerms";
-import StepConfirm from "@/components/create/StepConfirmation";
+import StepConfirmation from "@/components/create/StepConfirmation";
 
 export default function CreatePage() {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState<number>(0);
   const [gift, setGift] = useState<string>("");
 
-  const steps = ["Gift", "Terms", "Confirmation"];
-
   const handleNext = () => setActiveStep((prev) => prev + 1);
+  const handleBack = () => setActiveStep((prev) => prev - 1);
+
+  // این تابع برای StepGiftSelection
+  const handleGiftSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // میتونی اینجا validation هم اضافه کنی
+    console.log("Gift submitted:", gift);
+  };
 
   return (
-    <Box sx={{ width: "100%", maxWidth: 600, mx: "auto", py: 4 }}>
-      <Stepper activeStep={activeStep} alternativeLabel>
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
+    <Box sx={{ mt: 4, px: 2 }}>
+      {activeStep === 0 && (
+        <StepGiftSelection
+          gift={gift}
+          setGift={setGift}
+          onSubmit={handleGiftSubmit}
+          onNext={handleNext} // بعد از submit میره مرحله بعد
+        />
+      )}
 
-      <Box sx={{ mt: 4 }}>
-        {activeStep === 0 && (
-          <StepGift gift={gift} setGift={setGift} onNext={handleNext} />
-        )}
-        {activeStep === 1 && <StepTerms onNext={handleNext} />}
-        {activeStep === 2 && <StepConfirm  />}
-      </Box>
+      {activeStep === 1 && (
+        <StepTerms
+          onNext={handleNext}
+          // onBack={handleBack} // اگه نمیخوای دکمه back باشه میتونی کامنت کنی
+        />
+      )}
+
+      {activeStep === 2 && <StepConfirmation />}
     </Box>
   );
 }

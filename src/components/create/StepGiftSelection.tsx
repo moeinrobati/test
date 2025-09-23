@@ -7,17 +7,20 @@ import { Box, Typography, TextField, Button } from "@mui/material";
 interface StepGiftSelectionProps {
   gift: string;
   setGift: (value: string) => void;
-  onNext: () => void; // به جای onSubmit
+  onSubmit: (e: FormEvent<HTMLFormElement>) => void; // حتما باید داشته باشه
+  onNext?: () => void; // اختیاری اگر میخوای بعد submit به مرحله بعد بری
 }
 
 export default function StepGiftSelection({
   gift,
   setGift,
+  onSubmit,
   onNext,
 }: StepGiftSelectionProps) {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    onNext(); // اینجا فراخوانی میشه
+    e.preventDefault(); // جلوگیری از reload صفحه
+    onSubmit(e);        // فراخوانی تابع اصلی
+    onNext?.();         // اگر onNext فرستاده شده بود اجرا کن
   };
 
   return (
