@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, ForwardedRef } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 import {
   Box,
@@ -12,22 +12,24 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  Slide,
   Divider,
   DialogActions,
-  Switch,
 } from "@mui/material";
+
+import Slide, { SlideProps } from "@mui/material/Slide";
+import Switch, { SwitchProps } from "@mui/material/Switch";
 import CheckIcon from "@mui/icons-material/Check";
-import Lottie, { LottieProps } from "lottie-react";
+import Lottie from "lottie-react";
 import { keyframes } from "@mui/system";
 
-// Transition برای Dialog
-const Transition = React.forwardRef(function Transition(
-  props: any,
-  ref: ForwardedRef<HTMLDivElement>
+// Transition برای Dialog (با تایپ SlideProps)
+const Transition = React.forwardRef<HTMLDivElement, SlideProps>(function Transition(
+  props,
+  ref
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+Transition.displayName = "Transition";
 
 // Shake animation برای switch
 const shake = keyframes`
@@ -38,10 +40,10 @@ const shake = keyframes`
   100% { transform: translateX(0); }
 `;
 
-// سفارشی سازی switch
-const IOSSwitch = React.forwardRef(function IOSSwitch(
-  props: any,
-  ref: ForwardedRef<HTMLInputElement>
+// سفارشی سازی switch با تایپ SwitchProps
+const IOSSwitch = React.forwardRef<HTMLInputElement, SwitchProps>(function IOSSwitch(
+  props,
+  ref
 ) {
   return (
     <Switch
@@ -89,6 +91,7 @@ const IOSSwitch = React.forwardRef(function IOSSwitch(
     />
   );
 });
+IOSSwitch.displayName = "IOSSwitch";
 
 // تایپ props
 interface StepTermsProps {
@@ -96,7 +99,7 @@ interface StepTermsProps {
   onNext: () => void;
 }
 
-export default function StepTerms({ gift, onNext }: StepTermsProps) {
+export default function StepTerms({ gift, onNext }: StepTermsProps): JSX.Element {
   const [animationData, setAnimationData] = useState<any>(null);
   const [durationDialogOpen, setDurationDialogOpen] = useState<boolean>(false);
   const [tempDuration, setTempDuration] = useState<string | null>(null);
@@ -142,6 +145,13 @@ export default function StepTerms({ gift, onNext }: StepTermsProps) {
 
   return (
     <Box sx={{ position: "relative", pt: 2, pb: 4, px: 2, textAlign: "center" }}>
+      {/* نمونه نمایش لوتی (اگر نیاز نباشه می‌تونی حذفش کنی) */}
+      {animationData && (
+        <Box sx={{ width: 200, mx: "auto", mb: 2 }}>
+          <Lottie animationData={animationData} loop />
+        </Box>
+      )}
+
       {/* توضیح بالای صفحه */}
       <Typography
         variant="h6"
@@ -278,7 +288,7 @@ export default function StepTerms({ gift, onNext }: StepTermsProps) {
         </Box>
       </Dialog>
 
-      {/* توضیحات */}
+      {/* توضیحات و تنظیمات دیگر */}
       <Typography
         sx={{
           mb: 3,
@@ -293,7 +303,6 @@ export default function StepTerms({ gift, onNext }: StepTermsProps) {
         Choose how long the giveaway will run. Winners will be selected automatically when time is up.
       </Typography>
 
-      {/* Participant requirements */}
       <Box sx={{ maxWidth: 700, mx: "auto", mt: 1, textAlign: "left", display: "flex", flexDirection: "column", gap: 2 }}>
         <Box sx={{ border: "1px solid #282828ff", borderRadius: 1.5, p: 1.5, display: "flex", flexDirection: "column", gap: 1.5 }}>
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -307,10 +316,7 @@ export default function StepTerms({ gift, onNext }: StepTermsProps) {
           </Box>
         </Box>
 
-        <Typography
-          variant="subtitle2"
-          sx={{ color: "#aeaeaeff", mt: 3, mb: 0, fontWeight: "medium", fontSize: "0.9rem", lineHeight: 1.2, textAlign: "left" }}
-        >
+        <Typography variant="subtitle2" sx={{ color: "#aeaeaeff", mt: 3, mb: 0, fontWeight: "medium", fontSize: "0.9rem", lineHeight: 1.2, textAlign: "left" }}>
           Notifications
         </Typography>
 
@@ -320,17 +326,7 @@ export default function StepTerms({ gift, onNext }: StepTermsProps) {
         </Box>
       </Box>
 
-      <Typography
-        sx={{
-          mb: 3,
-          color: "#888",
-          fontSize: "0.7rem",
-          lineHeight: 1.5,
-          textAlign: "left",
-          maxWidth: 350,
-          mx: "auto",
-        }}
-      >
+      <Typography sx={{ mb: 3, color: "#888", fontSize: "0.7rem", lineHeight: 1.5, textAlign: "left", maxWidth: 350, mx: "auto" }}>
         Turn this off if you don’t want to notify participants in the channel when the giveaway ends.
       </Typography>
     </Box>
