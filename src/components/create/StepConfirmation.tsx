@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { Box } from "@mui/material";
-import Lottie, { LottieProps } from "lottie-react";
+import Lottie from "lottie-react";
 import confirmationAnim from "@public/animations/confirmation.json";
 import successCheck from "@public/animations/successCheck.json";
 
