@@ -52,11 +52,11 @@ export default function ActiveSwitcher() {
       <Box
         sx={{
           position: "fixed",
-          top: 20,
+          top: 22,
           left: "50%",
           transform: "translateX(-50%)",
-          width: 395,
-          height: 45,
+          width: 390,
+          height: 40,
           borderRadius: 999,
           backgroundColor: "#1f1f1f",
           display: "flex",
@@ -92,7 +92,7 @@ export default function ActiveSwitcher() {
               display: "flex",
               alignItems: "flex-end",   // متن میاد پایین
               justifyContent: "center", // وسط افقی
-              pb: "2px",                // فاصله از پایین
+              pb: "8.5px",                // فاصله از پایین
             }}
           >
             <Typography
